@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+.vacation-ticketing-table .datatable-header .datatable-header-cell {
+    padding: 1.9rem 1.2rem !important;
+}
+.rtl {
+    @import "assets/css/theme-styles/_rtl.scss"
+}
+.ltr {
+    @import "assets/css/theme-styles/_ltr.scss"
+}

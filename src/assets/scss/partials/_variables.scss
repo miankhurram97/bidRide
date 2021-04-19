@@ -1,0 +1,45 @@
+$white: #ffffff;
+$white-two: #f8f8f8;
+$black: #000000;
+$blue: #0073aa;
+
+
+@mixin button($bg, $border, $border-color, $round, $pad) {
+    background: $bg;
+    border: $border solid;
+    border-color: $border-color;
+    border-radius: $round;
+    padding: $pad;
+}
+
+@mixin ff-bold($ff, $fz,$fw) {
+    font-family: $ff;
+    font-size: $fz;
+    font-weight: $fw;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+
+@mixin ff-medium($ff, $fz, $fw) {
+    font-family: $ff;
+    font-size: $fz;
+    font-weight: $fw;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+}
+
+
+@mixin ff-regular($ff, $fz, $fw) {
+    font-family: $ff;
+    font-size: $fz;
+    font-weight: $fw;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.36;
+    letter-spacing: normal;
+}

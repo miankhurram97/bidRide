@@ -1,0 +1,526 @@
+<div class="page-header">
+    <div class="page-header-title">
+        <h4>{{Dashboard}}</h4>
+    </div>
+</div>
+<div class="page-body">
+    <div class="card" id="main">
+        <div class="card-block table-border-style">
+            <!-- Search box for table search -->
+            <div class="search-top">
+                <div class="form-group row nopaddingnopadding">
+
+                    <div class="floating-label col-md-3">
+                        <mat-form-field *ngIf="!userType && !connectedToRide" appearance="legacy">
+                            <input matInput placeholder="{{pickup}}" ngx-google-places-autocomplete [options]='options'
+                                #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event , 'from')">
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="floating-label col-md-3">
+                        <!-- <input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/> -->
+                        <mat-form-field *ngIf="!userType && !connectedToRide" appearance="legacy">
+                            <input matInput placeholder="{{dropoff}}" ngx-google-places-autocomplete [options]='options'
+                                #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event , 'to')">
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <!-- Create Button -->
+                    <div class="col-md-6 pull-right" *ngIf="!admin">
+                        <button class="fa fa-map-marker btn btn-success green-btn pull-right"
+                            (click)="getLocationOnClick()"></button>
+                        <button class="btn btn-success green-btn pull-right" *ngIf="connectedToRide"
+                            (click)="cancelRideOnClick()">{{CancelRide}}</button>
+                        <button class="btn btn-success green-btn pull-right" *ngIf="userType && connectedToRide"
+                            (click)="getRideInfoOnClick()">{{RideInformation}}</button>
+                        <button class="btn btn-success green-btn pull-right" *ngIf="!userType && connectedToRide"
+                            (click)="getDriverInfoOnClick()">{{DriverInformation}}</button>
+                        <button class="btn btn-success green-btn pull-right" *ngIf="userType && connectedToRide"
+                            (click)="completeUserRideOnClick()">{{CompleteRide}}</button>
+                        <button class="btn btn-success green-btn pull-right" *ngIf="!userType && !connectedToRide"
+                            (click)="biddingPopupOnClick()">{{Bidding}}</button>
+                        <button class="btn btn-success green-btn pull-right" *ngIf="userType && !connectedToRide"
+                            (click)="openRideRequestModel()">{{RideRequests}}</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12 col-md-12 col-xl-12">
+                    <!-- <div class='agm-map-container-inner sebm-google-map-container-inner'></div>
+                    <div class='agm-map-content'>
+                        <ng-content></ng-content>
+                    </div> -->
+                    <!-- Latitude: 31.5899039 -->
+                    <!-- Longitude: 74.3891034 -->
+
+                    <!-- <agm-map [latitude]="31.5899039" style="height: 600px;" [longitude]="74.3891034 ">
+                        <agm-marker [latitude]="31.5899039" [longitude]="74.3891034 ">
+        
+                        </agm-marker>
+                    </agm-map> -->
+                    <agm-map style="height: 700px;" [latitude]="lat" [longitude]="lng" [zoom]="zoom"
+                        (mapClick)="mapClicked($event)" (mapReady)="onMapReady($event)">
+                        <agm-marker *ngIf="showUserMarkOnly" [latitude]="lat" [longitude]="lng" [iconUrl]="usericon">
+                        </agm-marker>
+                        <agm-marker *ngFor="let drive of drivers ; let i = index"
+                            (markerClick)="clickedMarker(drive, i)" [latitude]="drive.latitude"
+                            [longitude]="drive.longitude" [iconUrl]="drivericon">
+                            <agm-info-window>
+                                <strong>{{Name}} : {{drive.user_name}}</strong><br>
+                                <strong>{{Email}} : {{drive.user_email}}</strong><br>
+                                <strong>{{Phone}}: {{drive.phone}}</strong><br>
+                                <strong>{{Vehicle}}: {{drive.ride_option_name}}</strong>
+                            </agm-info-window>
+                        </agm-marker>
+                        <!-- [markerOptions]="markerOptions" [renderOptions]="renderOptions" -->
+                        <agm-direction *ngIf="showDestination" [origin]="origin" [markerOptions]="markerOptions"
+                            [renderOptions]="renderOptions" [destination]="destination">
+                        </agm-direction>
+                    </agm-map>
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-xl-12">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="biddingModal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">{{Bidding}}</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{PickOff}} : {{objDistance?.origin_addresses}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Destination}} : {{objDistance?.destination_addresses}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Distance}} : {{distanceRows?.distance.text}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Duration}} : {{distanceRows?.duration.text}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{EstimatedPrice}} : {{estimatedPrice | number:'1.2-2'}}</Address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <mat-form-field appearance="legacy">
+                                <input matInput placeholder="{{BiddingMinutes}}" (change)="checkMinutes()"
+                                    name="biddingMinutes" [(ngModel)]="biddingMinutes"
+                                    (keydown)="onlyDecimalNumberKey($event)" maxlength="2">
+                                <mat-icon matSuffix>alarm</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mlty-lable custom-multi-selector multi-select-margin accountNumber-section"
+                                id="selectedRideOptionLabel-id">
+                                <label id="selectedRideOptionLabel" class="single-select-lable customLabel">{{RideOptions}}</label>
+                                <angular2-multiselect [data]="rideOptionsArray" name="selectedRideOption"
+                                    [(ngModel)]="selectedRideOption" #SelectedRideOption="ngModel"
+                                    [settings]="dropDown.singleSelectSetting"
+                                    (onSelect)="onItemSelect('selectedRideOptionLabel', selectedRideOption)"
+                                    (onDeSelect)="onItemDeSelect('selectedRideOptionLabel', 'selectedRideOptionLabel-id')"
+                                    (onDeSelectAll)="onDeSelectAll('selectedRideOptionLabel')">
+                                </angular2-multiselect>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- [disabled]="biddingMinutes > 15 || biddingMinutes < 1 " -->
+                            <button class="btn btn-success green-btn pull-right" (click)="cancelBiddingOnClick()">{{CancelBidding}}</button>
+                            <button class="btn btn-success green-btn pull-right" (click)="startBiddingOnClick()">{{StartBidding}}</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <h4>{{Bidding}}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="algo-table">
+                                <div class="table-responsive loading">
+                                    <ngx-loading [show]="loading"
+                                        [config]="{animationType: ngxLoadingAnimationTypes.circleSwish, primaryColour: primaryColour, backdropBorderRadius: '6px'}"
+                                        [template]="loadingTemplate"></ngx-loading>
+                                    <ngx-datatable class="material hidden-footer" [columnMode]="'force'"
+                                        [headerHeight]="50" [footerHeight]="50" [rows]="rows"
+                                        (activate)="onActivate($event)" [rowHeight]="'auto'" [rowHeight]="50">
+                                        <!-- Column Templates -->
+                                        <ngx-datatable-column name="driverFullname" [canAutoResize]="false" [width]="400">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{Name}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="driverRideOption" [canAutoResize]="false" [width]="400">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{Vehicle}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="ridePrice" [canAutoResize]="false" [width]="400">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{Price}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="driverPhone" [canAutoResize]="false" [width]="400">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{Phone}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="{{Action}}" [canAutoResize]="false" [width]="100">
+                                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                                <button class="btn-xs btn-success green-btn"
+                                                    (click)="SelectRide(row)">{{SelectRideText}}</button>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-footer></ngx-datatable-footer>
+
+                                    </ngx-datatable>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="biddingRequestModal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">{{BiddindRequests}}</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="algo-table">
+                                <div class="table-responsive loading">
+                                    <ngx-loading [show]="loading"
+                                        [config]="{animationType: ngxLoadingAnimationTypes.circleSwish, primaryColour: primaryColour, backdropBorderRadius: '6px'}"
+                                        [template]="loadingTemplate"></ngx-loading>
+                                    <ngx-datatable id="MainGrid" class="material" [columnMode]="'force'"
+                                        [headerHeight]="50" [footerHeight]="50" [rows]="biddingRows"
+                                        (activate)="onBidRequest($event)" [rowHeight]="'auto'" [rowHeight]="50">
+                                        <!-- Column Templates -->
+                                        <ngx-datatable-column name="Drop Off Location" [canAutoResize]="false" [width]="400">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{dropoff}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Pickup Location" [canAutoResize]="false">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{PickOff}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Bidding Time" [canAutoResize]="false">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{BiddingTime}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Distance" [canAutoResize]="false">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{Distance}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Ride Option" [canAutoResize]="false">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{Vehicle}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Ride Price" [canAutoResize]="false" [width]="100">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{RidePrice}}</div>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                                <mat-form-field appearance="legacy">
+                                                    <input matInput placeholder="" name="biddingMinutes"
+                                                        [(ngModel)]="row.ridePrice"
+                                                        (keydown)="onlyDecimalNumberKey($event)" maxlength="5">
+                                                </mat-form-field>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="{{Action}}" [canAutoResize]="false" [width]="100">
+                                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                                <button class="btn-xs btn-success green-btn"
+                                                    (click)="saveBidPrice(row)">{{SaveBid}}</button>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </ngx-datatable>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="driverInfoModal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{DriverInformation}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Name}}: {{driverInfo?.user_name}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Email}} : {{driverInfo?.user_email}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{CityText}} : {{driverInfo?.city}}</Address>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Region}} : {{driverInfo?.region}}</Address>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Currency}} : {{driverInfo?.currency_name}}</Address>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>org: {{driverInfo?.org}}</Address>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{RideOptions}}: {{driverInfo?.ride_option_name}}</Address>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Phone}}: {{driverInfo?.phone}}</Address>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Vehicle}}: {{driverInfo?.vehicle}}</Address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="rideInfoModal">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{RideInformation}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Name}}: {{rideInfo?.userName}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Email}} : {{rideInfo?.email}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Country}} : {{rideInfo?.country}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{RidePrice}} : {{rideInfo?.ridePrice}}</Address>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{pickup}} : {{rideInfo?.pickLocation}}</Address>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Destination}} : {{rideInfo?.dropLocation}}</Address>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="page-header">
+                                <div class="page-header-title">
+                                    <Address>{{Phone}}: {{rideInfo?.phone}}</Address>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="row align-items-center internationalization">
+    <div class="row pull-right align-items-center">
+        <div class="col-sm-12">
+            <div class="pull-right mr-4">
+                <div class="forgot-password">
+                    <a class="forget-password" (click)="crateAccount()" id="forget-password">{{signup}}</a>
+                </div>
+            </div>
+            <div class="pull-right mr-4">
+                <div class="forgot-password">
+                    <a class="forget-password" (click)="loginScreen()" id="forget-password">{{Login}}</a>
+                </div>
+            </div>
+           
+        </div>
+      
+    </div>
+    <div class="dropdown custom-dropdown text-right">
+        <a class="nav-link dropbtn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="ti-world"></i>
+        </a>
+        <div class="dropdown-menu dropdown-content" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" *ngFor="let language of allLanguagesList"
+                (click)="changeLanguage(language)">{{language.languageName}}</a>
+        </div>
+    </div>
+    <div class="dropdown custom-dropdown text-left" *ngIf="!isActiveRoute">
+        <a class="nav-link dropbtn" type="button" id="logoutdropdown" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="fa fa-user"></i>
+        </a>
+        <div class="dropdown-menu dropdown-content" aria-labelledby="logoutdropdown" (click)="logOut()">
+            <a class="dropdown-item">Logout</a>
+        </div>
+    </div>
+    <br>
+
+</div>

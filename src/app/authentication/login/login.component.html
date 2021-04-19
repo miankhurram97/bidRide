@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-sm-6 login-container user-bs-reset">
+        <app-auth-header></app-auth-header>
+        <div class="login-content">
+            <div class="login-content-inner">
+                <img class="login-logo login-6" src="../../../assets/images/logo-algoras-1.png">
+                <form class="login-form" #loginForm="ngForm" (ngSubmit)="loginForm.form.valid && login(loginForm)">
+                    <h1 class="login-heading">{{Login}}</h1>
+                    <div *ngIf="hasMsg"
+                        [ngClass]="{'col-md-12':true,'alert':true,'alert-success-login':isSuccessMsg,'alert-danger':isfailureMsg,'btiMsg':true,'showAlert':showMsg}">
+                        <span>{{messageText}}</span>
+                    </div>
+                    <div>
+                        <mat-form-field>
+                            <input matInput placeholder="{{email}}" name="userName" [(ngModel)]="userName"
+                                pattern='^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$' #userNameRequired="ngModel"
+                                required>
+                        </mat-form-field>
+                        <div *ngIf="loginForm.submitted && userNameRequired.invalid">
+                            <div class='error-msg' *ngIf="userNameRequired.errors.required">
+                                {{required}}
+                            </div>
+                            <div class='error-msg' *ngIf="userNameRequired.errors.pattern">
+                                {{emailValidation}}
+                            </div>
+                        </div>
+
+                        <mat-form-field>
+                            <input type="password" matInput placeholder="{{Password}}" title="" name="password"
+                                [(ngModel)]="password" #passwordRequired="ngModel" id="password-field" required>
+                            <mat-icon matSuffix class="eye-icon"
+                                (mousedown)="commonService.showPassword('password-field');"
+                                (mouseup)="commonService.hidePassword('password-field');">
+                                visibility</mat-icon>
+                        </mat-form-field>
+                        <div *ngIf="loginForm.submitted && passwordRequired.invalid">
+                            <div class='error-msg' [hidden]="!passwordRequired.errors.required">
+                                {{required}}
+                            </div>
+                        </div>
+
+                        <div class="row remember-me align-items-center">
+                            <div class="col-sm-12">
+                                <div class="pull-left remember-section">
+                                    <input class="rememberme remembermecheckbox" name="remember" [(ngModel)]="remember"
+                                        type="checkbox">
+                                    <label class="ml-2">{{rememberMe}}</label>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="forgot-password">
+                                        <a class="forget-password" [routerLink]="['/resetPassowrd']"
+                                            id="forget-password">{{forgetPassword}}</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <button class="btn green btn-rounded btn-lg" type="submit">{{Login}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 user-bs-reset">
+        <div class="video-player">
+            <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""
+                frameborder="0" height="100%" src="https://www.youtube.com/embed/zZI0yazXjnQ?controls=0"
+                width="100%"></iframe>
+            <!-- <div class="overlay-bg"></div> -->
+        </div>
+        <!-- For Dynamic text -->
+        <div class="login-content-right" [innerHTML]="sideDetailPreference">
+        </div>
+    </div>
+</div>

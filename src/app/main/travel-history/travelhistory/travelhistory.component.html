@@ -1,0 +1,112 @@
+<div class="page-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- screen header -->
+            <div class="page-header">
+                <div class="page-header-title">
+                    <span>
+                        <h3>{{TravelHistory}}</h3>
+                    </span>
+                </div>
+            </div>
+            <!-- screen header -->
+            <div class="card" id="profile3">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="content-heading">
+                                <div class="search-top">
+                                    <div class="form-group row nopaddingnopadding">
+                                        <div class="floating-label col-sm-4">
+                                            <mat-form-field appearance="legacy">
+                                                <input matInput placeholder="{{search}}" (keyup)='updateFilter($event)'>
+                                                <mat-icon matSuffix>search</mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="algo-table">
+                                <div class="table-responsive">
+                                    <ngx-datatable id="MainGrid" class="material" [rows]="rows" [columnMode]="'force'"
+                                        [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [selected]="selected"
+                                        [selectionType]="'checkbox'" (select)='onSelect($event)'
+                                        (activate)="edit1($event)">
+                                        <ngx-datatable-column [width]="70" [sortable]="false" [canAutoResize]="false"
+                                            [draggable]="false" [resizeable]="false" [headerCheckboxable]="true"
+                                            [checkboxable]="true"></ngx-datatable-column>
+                                        <!-- Column Templates -->
+
+                                        <ngx-datatable-column name="dropLocation" [width]="200">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{dropoff}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="pickLocation">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{PickOff}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="distance">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{Distance}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="rideOptionName">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{RideOptions}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="estimatedPrice" [width]="100">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{EstimatedPrice}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="ridePrice" [width]="100">
+                                            <ng-template let-column="column" let-sort="sortFn"
+                                                ngx-datatable-header-template>
+                                                <div (click)="sort()">{{RidePrice}}</div>
+                                            </ng-template>
+                                            <ng-template let-value="value" ngx-datatable-cell-template>
+                                                {{ value }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </ngx-datatable>
+
+                                </div>
+                            </div>
+
+                            <!-- <app-table-footer [selected]="selected" [page]="page" (changePageSizeEvent)="changePageSize($event)">
+                            </app-table-footer> -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <app-confirmation-modal id="confirmation-modal" class="modal fade" role="dialog" tabindex="-1"
+    aria-labelledby="exampleModalLabel" (deleteEvent)="toDelete()" aria-hidden="true">
+</app-confirmation-modal> -->

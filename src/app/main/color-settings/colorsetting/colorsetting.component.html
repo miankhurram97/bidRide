@@ -1,0 +1,195 @@
+<div class="page-header">
+    <div class="page-header-title">
+        <h3>{{ThemeSettings}}</h3>
+    </div>
+</div>
+<div id="confirmation-modal" class="modal fade" role="dialog" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{confirmationModalTitle}}</h5>
+                <span class="btnClose" (click)='closeModal()'><i class="fa fa-close"></i></span>
+            </div>
+            <div class="modal-body content-body">
+                {{confirmationModalBody}}
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success green-btn" (click)="saveSettings(f)">{{OkText}}</button>
+                <button class="btn btn-success" (click)='closeModal()'>{{CancelText}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-body">
+    <form #f="ngForm" (ngSubmit)=" f.form.valid && create(f)">
+
+        
+        <div class="page-header">
+            <div class="page-header-title">
+                <h4>Main color</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" id="colorsForm">
+                    <div class="card-block table-border-style">
+                        <div class="row mt-4">
+
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="mainColor" [(ngModel)]="model.mainColor"
+                                        #mainColor="ngModel" (change)="changeColor(model.mainColor,'mainColor')"
+                                        placeholder="Main Color">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="mainColorHover"
+                                        [(ngModel)]="model.mainColorHover" #mainColorHover="ngModel"
+                                        (change)="changeColor(model.mainColorHover,'mainColorHover')"
+                                        placeholder="Main Color Hover">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="sideBar" [(ngModel)]="model.sideBar"
+                                        #sideBar="ngModel" (change)="changeColor(model.sideBar,'sideBar')"
+                                        placeholder="Side Bar">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-header">
+            <div class="page-header-title">
+                <h4>Button Color</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card" id="colorsForm">
+                    <div class="card-block table-border-style">
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnSuccess" [(ngModel)]="model.btnSuccess"
+                                        (change)="changeColor(model.btnSuccess,'btnSuccess')" #btnSuccess="ngModel"
+                                        placeholder="Btn Success">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnSuccessHover"
+                                        [(ngModel)]="model.btnSuccessHover" #btnSuccessHover="ngModel"
+                                        (change)="changeColor(model.btnSuccessHover,'btnSuccessHover')"
+                                        placeholder="Btn Success Hover">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnWarning" [(ngModel)]="model.btnWarning"
+                                        (change)="changeColor(model.btnWarning,'btnWarning')" #btnWarning="ngModel"
+                                        placeholder="Btn Warning">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnWarningHover"
+                                        [(ngModel)]="model.btnWarningHover" #btnWarningHover="ngModel"
+                                        (change)="changeColor(model.btnWarningHover,'btnWarningHover')"
+                                        placeholder="Btn Warning Hover">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnGreen" [(ngModel)]="model.btnGreen"
+                                        (change)="changeColor(model.btnGreen,'btnGreen')" #btnGreen="ngModel"
+                                        placeholder="Btn Green">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnGreenHover" [(ngModel)]="model.btnGreenHover"
+                                        (change)="changeColor(model.btnGreenHover,'btnGreenHover')"
+                                        #btnGreenHover="ngModel" placeholder="Btn Green Hover">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnInfo" [(ngModel)]="model.btnInfo"
+                                        (change)="changeColor(model.btnInfo,'btnInfo')" #btnInfo="ngModel"
+                                        placeholder="Btn Info">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnInfoHover" [(ngModel)]="model.btnInfoHover"
+                                        (change)="changeColor(model.btnInfoHover,'btnInfoHover')"
+                                        #btnInfoHover="ngModel" placeholder="Btn Info Hover">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnDanger" [(ngModel)]="model.btnDanger"
+                                        (change)="changeColor(model.btnDanger,'btnDanger')" #btnDanger="ngModel"
+                                        placeholder="Btn Danger">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnDangerHover"
+                                        [(ngModel)]="model.btnDangerHover" #btnDangerHover="ngModel"
+                                        (change)="changeColor(model.btnDangerHover,'btnDangerHover')"
+                                        placeholder="Btn Danger Hover">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnPrimary" [(ngModel)]="model.btnPrimary"
+                                        (change)="changeColor(model.btnPrimary,'btnPrimary')" #btnPrimary="ngModel"
+                                        placeholder="Btn Pimary">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field>
+                                    <input type="color" matInput name="btnPrimaryHover"
+                                        [(ngModel)]="model.btnPrimaryHover" #btnPrimaryHover="ngModel"
+                                        (change)="changeColor(model.btnPrimaryHover,'btnPrimaryHover')"
+                                        placeholder="Btn Primary Hover">
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success green-btn" title="Save">Save</button>
+                                <button type="button" (click)="resetColorSetting()" class="btn btn-primary"
+                                    title="Save">Reset</button>
+                                <!-- <button type="button" class="btn btn-success" [routerLink]="'/dashboard'"
+                                    title="Cancel">Cancel</button> -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>

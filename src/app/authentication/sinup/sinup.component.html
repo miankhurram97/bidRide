@@ -1,0 +1,186 @@
+<div class="row">
+    <div class="col-sm-6 login-container user-bs-reset">
+        <app-auth-header></app-auth-header>
+        <div class="login-content">
+            <div class="login-content-inner">
+                <img class="login-logo login-6" src="../../../assets/images/logo-algoras-1.png">
+                <form class="login-form" #loginForm="ngForm" (ngSubmit)="loginForm.form.valid && login(loginForm)">
+
+                    <h1 class="login-heading">{{SignUp}}</h1>
+                    <div *ngIf="hasMsg"
+                        [ngClass]="{'col-md-12':true,'alert':true,'alert-success-login':isSuccessMsg,'alert-danger':isfailureMsg,'btiMsg':true,'showAlert':showMsg}">
+                        <span>{{messageText}}</span>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-form-field>
+                                    <input matInput placeholder="{{FirstName}}" name="firstName" [(ngModel)]="firstName"
+                                        #firstNameRequired="ngModel" required>
+                                </mat-form-field>
+                                <div *ngIf="loginForm.submitted && firstNameRequired.invalid">
+                                    <div class='error-msg' *ngIf="firstNameRequired.errors.required">
+                                        {{required}}
+                                        <!-- {{defaultFormValues[0]['listDtoFieldValidationMessage'][0]['validationMessage']}} -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-form-field>
+                                    <input matInput placeholder="{{LastName}}" name="lastName" [(ngModel)]="lastName"
+                                        #lastNameRequired="ngModel" required>
+                                </mat-form-field>
+                                <div *ngIf="loginForm.submitted && lastNameRequired.invalid">
+                                    <div class='error-msg' *ngIf="lastNameRequired.errors.required">
+                                        {{required}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-form-field>
+                                    <input matInput placeholder="{{Email}}" name="email" [(ngModel)]="email"
+                                        pattern='^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$' #emailRequired="ngModel"
+                                        required>
+                                </mat-form-field>
+                                <div *ngIf="loginForm.submitted && emailRequired.invalid">
+                                    <div class='error-msg' *ngIf="emailRequired.errors.required">
+                                        {{required}}
+                                    </div>
+                                    <div class='error-msg' *ngIf="emailRequired.errors.pattern">
+                                        {{emailValidation}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-form-field>
+                                    <input matInput placeholder="{{Phone}}" name="phone" [(ngModel)]="phone" maxLength="15"
+                                        (keydown)="onlyDecimalNumberKey($event)" #phoneRequired="ngModel" required>
+                                </mat-form-field>
+                                <div *ngIf="loginForm.submitted && phoneRequired.invalid">
+                                    <div class='error-msg' *ngIf="phoneRequired.errors.required">
+                                        {{required}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-form-field>
+                                    <input type="password" matInput placeholder="{{Password}}" title="" name="password"
+                                        [(ngModel)]="password" #passwordRequired="ngModel" id="password-field" required>
+                                    <mat-icon matSuffix class="eye-icon"
+                                        (mousedown)="commonService.showPassword('password-field');"
+                                        (mouseup)="commonService.hidePassword('password-field');">
+                                        visibility</mat-icon>
+                                </mat-form-field>
+                                <div *ngIf="loginForm.submitted && passwordRequired.invalid">
+                                    <div class='error-msg' [hidden]="!passwordRequired.errors.required">
+                                        {{required}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-form-field>
+                                    <input type="password" matInput placeholder="{{ConfirmPassword}}" title=""
+                                        name="passwordConfirm" [(ngModel)]="passwordConfirm"
+                                        #passwordConfirmRequired="ngModel" id="password-field" required>
+                                </mat-form-field>
+                                <div *ngIf="loginForm.submitted && passwordConfirmRequired.invalid">
+                                    <div class='error-msg' [hidden]="!passwordConfirmRequired.errors.required">
+                                        {{required}}
+                                    </div>
+                                </div>
+                                <div *ngIf="passwordConfirm != password && !passwordConfirmRequired.invalid">
+                                    <div class='error-msg'>
+                                        {{passwordValidation}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" mt-2  mb-2 row remember-me align-items-center">
+                            <div class="col-sm-12">
+                                <div class="pull-left">
+                                    <div class="form-radio">
+                                        <div class="radio radio-inline">
+                                            <label>
+                                                <input type="radio" name="landscape" (change)="changeUserStatus(driver)"
+                                                    [(ngModel)]="driver" [value]="true">
+                                                <i class="helper"></i>{{Driver}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="form-radio">
+                                        <div class="radio radio-inline">
+                                            <label>
+                                                <input type="radio" name="landscape" (change)="changeUserStatus(driver)"
+                                                    [(ngModel)]="driver" [value]="false" checked="checked">
+                                                <i class="helper"></i>{{Rider}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-left" *ngIf="driver">
+                            <div class="col-md-12">
+                                <div class="mlty-lable custom-multi-selector multi-select-margin accountNumber-section"
+                                    id="selectedRideOptionLabel-id">
+                                    <label id="selectedRideOptionLabel" class="single-select-lable customLabel">{{RideOptions}}</label>
+                                    <angular2-multiselect [data]="rideOptionsArray" name="selectedRideOption"
+                                        [(ngModel)]="selectedRideOption" #SelectedRideOption="ngModel"
+                                        [settings]="dropDown.singleSelectSetting"
+                                        (onSelect)="onItemSelect('selectedRideOptionLabel', selectedRideOption)"
+                                        (onDeSelect)="onItemDeSelect('selectedRideOptionLabel', 'selectedRideOptionLabel-id')"
+                                        (onDeSelectAll)="onDeSelectAll('selectedRideOptionLabel')">
+                                    </angular2-multiselect>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" mt-2 row remember-me align-items-center">
+                            <div class="col-sm-12">
+                                <div class="pull-left remember-section">
+                                    <input class="rememberme remembermecheckbox" name="remember" [(ngModel)]="remember"
+                                        type="checkbox">
+                                    <label class="ml-2">{{RememberMe}}</label>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="forgot-password">
+                                        <a class="forget-password" id="forget-password">{{ForgotPassword}}</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <button class="btn green btn-rounded btn-lg" [disabled]="password != passwordConfirm"
+                            type="submit">{{SignUp}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 user-bs-reset">
+        <div class="video-player">
+            <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""
+                frameborder="0" height="100%" src="https://www.youtube.com/embed/zZI0yazXjnQ?controls=0"
+                width="100%"></iframe>
+            <!-- <div class="overlay-bg"></div> -->
+        </div>
+        <!-- For Dynamic text -->
+        <div class="login-content-right" [innerHTML]="sideDetailPreference">
+        </div>
+    </div>
+</div>

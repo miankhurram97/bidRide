@@ -1,0 +1,110 @@
+<nav class="pcoded-navbar">
+    <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
+    <div class="pcoded-inner-navbar main-menu" style="margin-top: 15px;">
+
+        <ul class="pcoded-item pcoded-left-item" item-border="true" item-border-style="none" subitem-border="true">
+            <li class="pcoded-hasmenu" dropdown-icon="style1" subitem-icon="style6">
+                <a>
+                    <span class="pcoded-micon"><i class="ti-list"></i></span>
+                    <span class="pcoded-mtext">Workflow</span>
+                    <span class=""></span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+                <ul class="pcoded-submenu status-menu" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                    <li class="pcoded-hasmenu" dropdown-icon="style1" subitem-icon="style6">
+                        <a [routerLink]="'/themeSettings'">
+                            <span class="pr-2 icon-cutom"><i class="ti-settings"></i></span>
+                            <span class="">{{ThemeSettings}}</span>
+                            <span class="pcoded-badge label label"></span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Dashboard -->
+        <ul class="pcoded-item pcoded-left-item" *ngIf="!admin">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/dashboard'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{Dashboard}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="pcoded-item pcoded-left-item" *ngIf="!admin">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/travelHistory'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{TravelHistory}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul>
+        <!-- <ul class="pcoded-item pcoded-left-item" *ngIf="userType">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/bidding'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">Bidding</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul> -->
+        <ul class="pcoded-item pcoded-left-item" *ngIf="!admin">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/settings'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{Settings}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="pcoded-item pcoded-left-item" *ngIf="!admin">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/weather'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{Weather}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul>
+        <!-- <ul class="pcoded-item pcoded-left-item">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/weather'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{Weather}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul> -->
+        <ul class="pcoded-item pcoded-left-item" *ngIf="admin">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/allUsers'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{AllUsers}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="pcoded-item pcoded-left-item" *ngIf="admin">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/allDrivers'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{AllDrivers}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="pcoded-item pcoded-left-item" *ngIf="admin">
+            <li class="pcoded-hasmenu" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="without-icon" [routerLink]="'/allTravelHistory'">
+                    <span class="pcoded-micon"><i class="ti-home"></i></span>
+                    <span class="pcoded-mtext">{{AllTravelHistory}}</span>
+                    <span class="pcoded-mcaret without-icon"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

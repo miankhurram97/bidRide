@@ -1,0 +1,78 @@
+CREATE TABLE usersLocation
+( 
+  `id` INT(50) primary key NOT null auto_increment,
+  `user_id` integer(50),
+  `user_email` VARCHAR(50) ,
+  `ip` VARCHAR(30),
+  `city` VARCHAR(50),
+  `region` VARCHAR(50),
+  `region_code` VARCHAR(50),
+  `country` VARCHAR(50),
+  `country_name` VARCHAR(50),
+  `continent_code` VARCHAR(50),
+  `in_eu` VARCHAR(50),
+  `postal` VARCHAR(50),
+  `latitude` VARCHAR(50),
+  `longitude` VARCHAR(50),
+  `timezone` VARCHAR(50),
+  `utc_offset` VARCHAR(50),
+  `country_calling_code` VARCHAR(50),
+  `currency` VARCHAR(50),
+  `languages` VARCHAR(50),
+  `asn` VARCHAR(50),
+  `org`VARCHAR(50)
+);
+
+ALTER TABLE userslocation
+  ADD   country_population varchar(40)
+    AFTER country_area;
+
+    CREATE TABLE rideRequest
+( 
+  `id` INT(100) primary key NOT null auto_increment,
+  `user_id` integer(100),
+  `bidding_time` VARCHAR(100) ,
+  `estimated_price` VARCHAR(100),
+  `pick_lat` VARCHAR(100),
+  `pick_lng` VARCHAR(100),
+  `pick_location` VARCHAR(500),
+  `drop_lat` VARCHAR(100),
+  `drop_lng` VARCHAR(100),
+  `drop_location` VARCHAR(500),
+  `distance` VARCHAR(100),
+  `duration` VARCHAR(100),
+  `ride_option_id` VARCHAR(100),
+  `ride_option_name` VARCHAR(100),
+  `isDeleted` boolean,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  
+);
+
+CREATE TABLE `manageride` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `biddingTime` varchar(100) DEFAULT NULL,
+  `distance` varchar(100) DEFAULT NULL,
+  `driverFullname` varchar(100) DEFAULT NULL,
+  `driverId` varchar(100) DEFAULT NULL,
+  `driverLat` varchar(500) DEFAULT NULL,
+  `driverLng` varchar(100) DEFAULT NULL,
+  `driverPhone` varchar(100) DEFAULT NULL,
+  `driverRideOption` varchar(500) DEFAULT NULL,
+  `rideOptionid` varchar(500) DEFAULT NULL,
+  `rideOptionName` varchar(500) DEFAULT NULL,
+  `ridePrice` varchar(500) DEFAULT NULL,
+  `dropLat` varchar(100) DEFAULT NULL,
+  `dropLng` varchar(100) DEFAULT NULL,
+  `dropLocation` varchar(100) DEFAULT NULL,
+  `duration` varchar(100) DEFAULT NULL,
+  `estimatedPrice` varchar(100) DEFAULT NULL,
+  `pickLat` varchar(100) DEFAULT NULL,
+  `pickLng` varchar(100) DEFAULT NULL,
+  `pickLocation` varchar(100) DEFAULT NULL,
+  `paymentReceivedAmount` varchar(100) DEFAULT NULL,
+  `paymentReceived` tinyint(1) DEFAULT NULL,
+  `userId` varchar(40) DEFAULT NULL,
+  `isDeleted` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
